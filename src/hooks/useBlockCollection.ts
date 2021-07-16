@@ -31,9 +31,13 @@ type ReconstructProps = {
   blocks: Block[]
 }
 
+type UpdateFunction<T extends Block> = (props: { id: string, value: T["value"]}) => void
+
 export interface BlockCollecion {
   blocks: Block[]
   addBlock: (type: BlockTypes) => void
+  handleSubmit: (func: (blocks: Block[]) => void) => () => void
+  update: UpdateFunction<Block>
 }
 
 export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): BlockCollecion => {
@@ -91,8 +95,31 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
     }
   }, [])
 
+  const handleSubmit = (func: (values: Block[]) => void): () => void => {
+    return () => {
+      func(blocks)
+    }
+  }
+
+  const update: UpdateFunction<Block> = ({ id, value}) => {
+    setBlocks(prev => {
+      const targetIndex = blocks.findIndex(b => b.id === id)
+      if (targetIndex === -1) {
+        return prev
+      }
+      //@ts-ignore
+      prev[targetIndex] = {
+        ...prev[targetIndex],
+        value: value
+      }
+      return [...prev]
+    })
+  }
+
   return {
     blocks,
-    addBlock
+    addBlock,
+    handleSubmit,
+    update
   }
 }

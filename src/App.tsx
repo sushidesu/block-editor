@@ -5,7 +5,7 @@ import { BlockEditor } from "./components/BlockEditor"
 import { css } from "@emotion/react";
 
 function App() {
-  const { blocks, addBlock } = useBlockCollection({ type: "reconstruct", payload: {
+  const { blocks, addBlock, handleSubmit, update } = useBlockCollection({ type: "reconstruct", payload: {
     blocks: [
       {
         id: "test",
@@ -33,7 +33,7 @@ function App() {
         }
       `}>
         {blocks.map((block, i) => (
-          <BlockEditor key={i} block={block} />
+          <BlockEditor key={i} block={block} update={update} />
         ))}
       </div>
       <div css={css`
@@ -43,6 +43,13 @@ function App() {
         <button onClick={() => addBlock("text")}>文章を追加</button>
         <button onClick={() => addBlock("image")}>画像を追加</button>
         <button onClick={() => addBlock("table")}>テーブルを追加</button>
+      </div>
+      <div css={css`
+        margin-top: 2em;
+      `}>
+        <button onClick={handleSubmit(blocks => {
+          console.log(blocks)
+        })}>OK</button>
       </div>
     </div>
   );
