@@ -53,25 +53,27 @@ function HeadingBlockEditor({ block, update }: BlockEditorProps<HeadingBlock>): 
   )
 }
 
-function TextBlockEditor({ block }: BlockEditorProps<TextBlock>): JSX.Element {
-  const [content, setContent] = useState<string>(block.value.content)
+function TextBlockEditor({ block, update }: BlockEditorProps<TextBlock>): JSX.Element {
   return (
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>文章</label>
-      <input value={content} onChange={e => {
-        setContent(e.target.value)
+      <input defaultValue={block.value.content} onBlur={(e) => {
+        update({ id: block.id, value: {
+          content: e.target.value
+        } })
       }} />
     </div>
   )
 }
 
-function ImageBlockEditor({block}: BlockEditorProps<ImageBlock>): JSX.Element {
-  const [imageUrl, setImageUrl] = useState<string>(block.value.imageUrl)
+function ImageBlockEditor({block, update}: BlockEditorProps<ImageBlock>): JSX.Element {
   return (
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>画像</label>
-      <input value={imageUrl} onChange={e => {
-        setImageUrl(e.target.value)
+      <input defaultValue={block.value.imageUrl} onBlur={(e) => {
+        update({ id: block.id, value: {
+          imageUrl: e.target.value
+        } })
       }} />
     </div>
   )
