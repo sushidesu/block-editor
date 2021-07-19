@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react"
+import { v4 as uuidv4 } from "uuid"
 import { EntityHookProps  } from "./entity"
 
 export type BlockTypes = "heading" | "text" | "image" | "table"
@@ -31,7 +32,10 @@ type ReconstructProps = {
   blocks: Block[]
 }
 
-type UpdateFunction<T extends Block> = (props: { id: string, value: T["value"]}) => void
+export type UpdateFunction<T> = (props: {
+  id: string
+  mutation: (prev: T) => T
+}) => void
 
 export interface BlockCollecion {
   blocks: Block[]
@@ -47,7 +51,7 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
     switch(type) {
       case "heading":
         const headingBlock: HeadingBlock = {
-          id: "",
+          id: uuidv4(),
           type: "heading",
           value: {
             content: ""
@@ -57,7 +61,7 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
         break
       case "text":
         const textBlock: TextBlock = {
-          id: "",
+          id: uuidv4(),
           type: "text",
           value: {
             content: ""
@@ -67,7 +71,7 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
         break
       case "image":
         const imageBlock: ImageBlock = {
-          id: "",
+          id: uuidv4(),
           type: "image",
           value: {
             imageUrl: ""
@@ -77,7 +81,7 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
         break
       case "table":
         const tableBlock: TableBlock = {
-          id: "",
+          id: uuidv4(),
           type: "table",
           value: {
             rows: [
@@ -101,18 +105,19 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
     }
   }
 
-  const update: UpdateFunction<Block> = ({ id, value}) => {
+  const update: UpdateFunction<Block> = ({ id, mutation }) => {
     setBlocks(prev => {
       const targetIndex = blocks.findIndex(b => b.id === id)
       if (targetIndex === -1) {
         return prev
       }
-      //@ts-ignore
-      prev[targetIndex] = {
-        ...prev[targetIndex],
-        value: value
+      const target = prev[targetIndex]
+      const newBlock = mutation(target)
+      const newBlocks = [...prev]
+      newBlocks[targetIndex] = {
+        ...newBlock
       }
-      return [...prev]
+      return newBlocks
     })
   }
 

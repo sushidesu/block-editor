@@ -1,9 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { css } from "@emotion/react"
-import { Block, HeadingBlock, ImageBlock, TableBlock, TableRow, TextBlock } from "../hooks/useBlockCollection"
-
-type UpdateFunction<T extends Block> = (props: { id: string, value: T["value"]}) => void
+import { UpdateFunction, Block, HeadingBlock, ImageBlock, TableBlock, TableRow, TextBlock } from "../hooks/useBlockCollection"
 
 export type Props = {
   block: Block
@@ -37,7 +35,7 @@ const labelStyle = css`
 
 type BlockEditorProps<T extends Block> = {
   block: T,
-  update: UpdateFunction<T>
+  update: UpdateFunction<Block>
 }
 
 function HeadingBlockEditor({ block, update }: BlockEditorProps<HeadingBlock>): JSX.Element {
@@ -45,8 +43,17 @@ function HeadingBlockEditor({ block, update }: BlockEditorProps<HeadingBlock>): 
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>見出し</label>
       <input defaultValue={block.value.content} onBlur={(e) => {
-        update({ id: block.id, value: {
-          content: e.target.value
+        update({ id: block.id, mutation: (prev) => {
+          if (prev.type === "heading") {
+            return ({
+              ...prev,
+              value: {
+                content: e.target.value
+              }
+            })
+          } else {
+            return prev
+          }
         } })
       }}/>
     </div>
@@ -58,9 +65,21 @@ function TextBlockEditor({ block, update }: BlockEditorProps<TextBlock>): JSX.El
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>文章</label>
       <input defaultValue={block.value.content} onBlur={(e) => {
-        update({ id: block.id, value: {
-          content: e.target.value
-        } })
+        update({
+          id: block.id,
+          mutation: (prev) => {
+            if (prev.type === "text") {
+              return ({
+                ...prev,
+                value: {
+                  content: e.target.value,
+                }
+              })
+            } else {
+              return prev
+            }
+          }
+        })
       }} />
     </div>
   )
@@ -71,25 +90,52 @@ function ImageBlockEditor({block, update}: BlockEditorProps<ImageBlock>): JSX.El
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>画像</label>
       <input defaultValue={block.value.imageUrl} onBlur={(e) => {
-        update({ id: block.id, value: {
-          imageUrl: e.target.value
-        } })
+        update({
+          id: block.id,
+          mutation: (prev) => {
+            if (prev.type === "image") {
+              return {
+                ...prev,
+                value: {
+                  ...prev.value,
+                  imageUrl: e.target.value
+                }
+              }
+            } else {
+              return prev
+            }
+          }
+        })
       }} />
     </div>
   )
 }
 
-function TableBlockEditor({block}: BlockEditorProps<TableBlock>): JSX.Element {
-  const [rows, setRows] = useState<TableRow[]>(block.value.rows)
-  const addRow = useCallback(() => {
-    setRows(prev => prev.concat({ title: "", body: "" }))
-  }, [])
+function TableBlockEditor({block, update}: BlockEditorProps<TableBlock>): JSX.Element {
+  const addRow = () => {
+    update({
+      id: block.id,
+      mutation: (prev) => {
+        if (prev.type === "table") {
+          return {
+            ...prev,
+            value: {
+              ...prev.value,
+              rows: prev.value.rows.concat({ title: "", body: "" })
+            }
+          }
+        } else {
+          return prev
+        }
+      }
+    })
+  }
   return (
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>テーブル</label>
       <table>
         <tbody>
-          {rows.map((row, i) => (
+          {block.value.rows.map((row, i) => (
             <TableRowEditor key={i} {...row} />
           ))}
         </tbody>
