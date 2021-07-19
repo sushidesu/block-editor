@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import "./App.css"
 import { useBlockCollection } from './hooks/useBlockCollection';
-import { BlockEditor } from "./components/BlockEditor"
+import { BlockEditor } from "./components/BlockEditor/BlockEditor"
 import { css } from "@emotion/react";
 
 function App() {
