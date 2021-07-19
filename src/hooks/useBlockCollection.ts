@@ -2,6 +2,7 @@ import { useCallback, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { EntityHookProps  } from "./entity"
 import { removeElementFromArray } from "../utils/removeElementFromArray"
+import { moveElementRelative } from "../utils/moveElementRelative"
 
 export type BlockTypes = "heading" | "text" | "image" | "table"
 
@@ -130,19 +131,8 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
           if (targetIndex === -1) {
             return prev
           }
-          if (targetIndex + index < 0 || prev.length <= targetIndex + index) {
-            return prev
-          }
-
           const newBlocks = [...prev]
-          const target = prev[targetIndex]
-          if (index < 0) {
-            newBlocks.slice(0, targetIndex + index - 1).concat(target, newBlocks.slice())
-
-          } else {
-
-          }
-
+          return moveElementRelative(newBlocks, targetIndex, index)
         })
     }
   }, [])

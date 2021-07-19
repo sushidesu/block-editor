@@ -3,7 +3,7 @@ export const moveElementRelative = <T>(array: T[], targetIndex: number, offset: 
   const newArray = [...array]
   const target = newArray[targetIndex]
 
-  if (offset == 0) {
+  if (offset === 0) {
     return array
   }
   const excluded = sliceLeft(newArray, targetIndex)
