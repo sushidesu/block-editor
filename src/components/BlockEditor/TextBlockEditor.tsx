@@ -2,11 +2,11 @@ import { TextBlock } from "../../hooks/useBlockCollection"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 
-export function TextBlockEditor({ block, update, remove }: BlockEditorProps<TextBlock>): JSX.Element {
+export function TextBlockEditor({ block, update, ...rest }: BlockEditorProps<TextBlock>): JSX.Element {
   return (
     <BlockEditorWrapper
       label="文章"
-      remove={remove}
+      {...rest}
     >
       <input defaultValue={block.value.content} onBlur={(e) => {
         update({

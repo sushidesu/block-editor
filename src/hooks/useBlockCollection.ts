@@ -38,10 +38,16 @@ export type UpdateFunction<T> = (props: {
   mutation: (prev: T) => T
 }) => void
 
+type MoveBlockProps = {
+  id: string
+  type: "relative" | "absolute", index: number 
+}
+
 export interface BlockCollecion {
   blocks: Block[]
   addBlock: (type: BlockTypes) => void
   removeBlock: (id: string) => void
+  moveBlock: (props: MoveBlockProps) => void
   handleSubmit: (func: (blocks: Block[]) => void) => () => void
   update: UpdateFunction<Block>
 }
@@ -111,6 +117,36 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
     })
   }, [])
 
+  const moveBlock = useCallback(({ id, type, index }: MoveBlockProps) => {
+    switch(type) {
+      case "absolute":
+        return
+      case "relative":
+        setBlocks(prev => {
+          if (index === 0) {
+            return prev
+          }
+          const targetIndex = prev.findIndex(block => block.id === id)
+          if (targetIndex === -1) {
+            return prev
+          }
+          if (targetIndex + index < 0 || prev.length <= targetIndex + index) {
+            return prev
+          }
+
+          const newBlocks = [...prev]
+          const target = prev[targetIndex]
+          if (index < 0) {
+            newBlocks.slice(0, targetIndex + index - 1).concat(target, newBlocks.slice())
+
+          } else {
+
+          }
+
+        })
+    }
+  }, [])
+
   const handleSubmit = (func: (values: Block[]) => void): () => void => {
     return () => {
       func(blocks)
@@ -137,6 +173,7 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
     blocks,
     addBlock,
     removeBlock,
+    moveBlock,
     handleSubmit,
     update
   }

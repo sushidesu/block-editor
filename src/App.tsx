@@ -5,7 +5,7 @@ import { BlockEditor } from "./components/BlockEditor/BlockEditor"
 import { css } from "@emotion/react";
 
 function App() {
-  const { blocks, addBlock, removeBlock, handleSubmit, update } = useBlockCollection({ type: "reconstruct", payload: {
+  const { blocks, addBlock, removeBlock, moveBlock, handleSubmit, update } = useBlockCollection({ type: "reconstruct", payload: {
     blocks: [
       {
         id: "test",
@@ -36,9 +36,28 @@ function App() {
         }
       `}>
         {blocks.map((block) => (
-          <BlockEditor key={block.id} block={block} update={update} remove={() => {
-            removeBlock(block.id)
-          }} />
+          <BlockEditor
+            key={block.id}
+            block={block}
+            update={update}
+            remove={() => {
+              removeBlock(block.id)
+            }}
+            moveUp={() => {
+              moveBlock({
+                id: block.id,
+                type: "relative",
+                index: -1
+              })
+            }}
+            moveDown={() => {
+              moveBlock({
+                id: block.id,
+                type: "relative",
+                index: 1
+              })
+            }}
+          />
         ))}
       </div>
       <div css={css`

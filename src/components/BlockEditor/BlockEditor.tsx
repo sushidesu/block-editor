@@ -9,6 +9,8 @@ export type BlockEditorProps<T extends Block> = {
   block: T,
   update: UpdateFunction<Block>
   remove: () => void
+  moveUp: () => void
+  moveDown: () => void
 }
 
 export function BlockEditor({ block, ...rest }: BlockEditorProps<Block>): JSX.Element | null {

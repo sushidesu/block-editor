@@ -3,7 +3,7 @@ import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 import { TableRowEditor } from "./TableRowEditor"
 
-export function TableBlockEditor({block, update, remove}: BlockEditorProps<TableBlock>): JSX.Element {
+export function TableBlockEditor({block, update, ...rest}: BlockEditorProps<TableBlock>): JSX.Element {
   const addRow = () => {
     update({
       id: block.id,
@@ -63,7 +63,7 @@ export function TableBlockEditor({block, update, remove}: BlockEditorProps<Table
   return (
     <BlockEditorWrapper
       label="テーブル"
-      remove={remove}
+      {...rest}
     >
       <table>
         <tbody>

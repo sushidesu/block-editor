@@ -4,10 +4,12 @@ import { css } from "@emotion/react"
 export type Props = {
   label: string
   remove: () => void
+  moveUp: () => void
+  moveDown: () => void
   children?: React.ReactNode
 }
 
-export function BlockEditorWrapper({ label, remove, children }: Props): JSX.Element {
+export function BlockEditorWrapper({ label, remove, moveUp, moveDown, children }: Props): JSX.Element {
   return (
     <div css={css`
       position: relative;
@@ -24,11 +26,20 @@ export function BlockEditorWrapper({ label, remove, children }: Props): JSX.Elem
       `}>
         {children}
       </div>
-      <button css={css`
+      <div css={css`
         position: absolute;
         top: 10px;
         right: 10px;
-      `} onClick={remove}>X</button>
+        display: flex;
+        flex-direction: column;
+        & > button + button {
+          margin-top: 8px;
+        }
+      `}>
+        <button onClick={remove}>X</button>
+        <button onClick={moveUp}>↑</button>
+        <button onClick={moveDown}>↓</button>
+      </div>
     </div>
   )
 }

@@ -2,11 +2,11 @@ import { ImageBlock } from "../../hooks/useBlockCollection"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 
-export function ImageBlockEditor({block, update, remove}: BlockEditorProps<ImageBlock>): JSX.Element {
+export function ImageBlockEditor({block, update, ...rest}: BlockEditorProps<ImageBlock>): JSX.Element {
   return (
     <BlockEditorWrapper
       label={"画像"}
-      remove={remove}
+      {...rest}
     >
       <input defaultValue={block.value.imageUrl} onBlur={(e) => {
         update({
