@@ -130,6 +130,24 @@ function TableBlockEditor({block, update}: BlockEditorProps<TableBlock>): JSX.El
       }
     })
   }
+  const removeRow = () => {
+    update({
+      id: block.id,
+      mutation: (prev) => {
+        if (prev.type === "table") {
+          return {
+            ...prev,
+            value: {
+              ...prev.value,
+              rows: prev.value.rows.slice(0, prev.value.rows.length-1)
+            }
+          }
+        } else {
+          return prev
+        }
+      }
+    })
+  }
   const rowUpdater: (index: number) => (mutation: (prev: TableRow) => TableRow) => void = (index) => (rowMutation) => {
     update({
       id: block.id,
@@ -161,6 +179,7 @@ function TableBlockEditor({block, update}: BlockEditorProps<TableBlock>): JSX.El
         </tbody>
       </table>
       <button onClick={addRow}>追加</button>
+      <button onClick={removeRow} >削除</button>
     </div>
   )
 }
