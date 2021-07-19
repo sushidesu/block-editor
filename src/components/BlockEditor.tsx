@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { css } from "@emotion/react"
 import { UpdateFunction, Block, HeadingBlock, ImageBlock, TableBlock, TableRow, TextBlock } from "../hooks/useBlockCollection"
+import { BlockEditorWrapper } from "./BlockEditorWrapper"
 
 export type Props = {
   block: Block
@@ -23,16 +23,6 @@ export function BlockEditor({ block, ...rest }: Props): JSX.Element | null {
   }
 }
 
-const blockWrapperStyle = css`
-  padding: 10px 12px;
-  box-shadow: 0 4px 8px rgba(73, 73, 60, 0.1);
-`
-
-const labelStyle = css`
-  display: block;
-  font-weight: bold;
-`
-
 type BlockEditorProps<T extends Block> = {
   block: T,
   update: UpdateFunction<Block>
@@ -41,8 +31,10 @@ type BlockEditorProps<T extends Block> = {
 
 function HeadingBlockEditor({ block, update, remove }: BlockEditorProps<HeadingBlock>): JSX.Element {
   return (
-    <div css={blockWrapperStyle}>
-      <label css={labelStyle}>見出し</label>
+    <BlockEditorWrapper
+      label={"見出し"}
+      remove={remove}
+    >
       <input defaultValue={block.value.content} onBlur={(e) => {
         update({ id: block.id, mutation: (prev) => {
           if (prev.type === "heading") {
@@ -57,15 +49,16 @@ function HeadingBlockEditor({ block, update, remove }: BlockEditorProps<HeadingB
           }
         } })
       }}/>
-      <button onClick={remove}>X</button>
-    </div>
+    </BlockEditorWrapper>
   )
 }
 
 function TextBlockEditor({ block, update, remove }: BlockEditorProps<TextBlock>): JSX.Element {
   return (
-    <div css={blockWrapperStyle}>
-      <label css={labelStyle}>文章</label>
+    <BlockEditorWrapper
+      label="文章"
+      remove={remove}
+    >
       <input defaultValue={block.value.content} onBlur={(e) => {
         update({
           id: block.id,
@@ -83,15 +76,16 @@ function TextBlockEditor({ block, update, remove }: BlockEditorProps<TextBlock>)
           }
         })
       }} />
-      <button onClick={remove}>X</button>
-    </div>
+    </BlockEditorWrapper>
   )
 }
 
 function ImageBlockEditor({block, update, remove}: BlockEditorProps<ImageBlock>): JSX.Element {
   return (
-    <div css={blockWrapperStyle}>
-      <label css={labelStyle}>画像</label>
+    <BlockEditorWrapper
+      label={"画像"}
+      remove={remove}
+    >
       <input defaultValue={block.value.imageUrl} onBlur={(e) => {
         update({
           id: block.id,
@@ -110,8 +104,7 @@ function ImageBlockEditor({block, update, remove}: BlockEditorProps<ImageBlock>)
           }
         })
       }} />
-      <button onClick={remove}>X</button>
-    </div>
+    </BlockEditorWrapper>
   )
 }
 
@@ -173,8 +166,10 @@ function TableBlockEditor({block, update, remove}: BlockEditorProps<TableBlock>)
     })
   }
   return (
-    <div css={blockWrapperStyle}>
-      <label css={labelStyle}>テーブル</label>
+    <BlockEditorWrapper
+      label="テーブル"
+      remove={remove}
+    >
       <table>
         <tbody>
           {block.value.rows.map((row, i) => (
@@ -184,8 +179,7 @@ function TableBlockEditor({block, update, remove}: BlockEditorProps<TableBlock>)
       </table>
       <button onClick={addRow}>追加</button>
       <button onClick={removeRow} >削除</button>
-      <button onClick={remove}>X</button>
-    </div>
+    </BlockEditorWrapper>
   )
 }
 

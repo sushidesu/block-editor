@@ -25,7 +25,10 @@ function App() {
   } })
 
   return (
-    <div>
+    <div css={css`
+      max-width: 600px;
+      margin: 0 auto;
+    `}>
       <h1>Editor</h1>
       <div css={css`
         & > * + * {
