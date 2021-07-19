@@ -1,23 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import { useState } from "react"
 import { css } from "@emotion/react"
 import { UpdateFunction, Block, HeadingBlock, ImageBlock, TableBlock, TableRow, TextBlock } from "../hooks/useBlockCollection"
 
 export type Props = {
   block: Block
   update: UpdateFunction<Block>
+  remove: () => void
 }
 
-export function BlockEditor({ block, update }: Props): JSX.Element | null {
+export function BlockEditor({ block, ...rest }: Props): JSX.Element | null {
   switch(block.type) {
     case "heading":
-      return <HeadingBlockEditor block={block} update={update} />
+      return <HeadingBlockEditor block={block} {...rest} />
     case "text":
-      return <TextBlockEditor block={block} update={update} />
+      return <TextBlockEditor block={block} {...rest} />
     case "image":
-      return <ImageBlockEditor block={block} update={update} />
+      return <ImageBlockEditor block={block} {...rest} />
     case "table":
-      return <TableBlockEditor block={block} update={update} />
+      return <TableBlockEditor block={block} {...rest} />
     default:
       return null
   }
@@ -36,9 +36,10 @@ const labelStyle = css`
 type BlockEditorProps<T extends Block> = {
   block: T,
   update: UpdateFunction<Block>
+  remove: () => void
 }
 
-function HeadingBlockEditor({ block, update }: BlockEditorProps<HeadingBlock>): JSX.Element {
+function HeadingBlockEditor({ block, update, remove }: BlockEditorProps<HeadingBlock>): JSX.Element {
   return (
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>見出し</label>
@@ -56,11 +57,12 @@ function HeadingBlockEditor({ block, update }: BlockEditorProps<HeadingBlock>): 
           }
         } })
       }}/>
+      <button onClick={remove}>X</button>
     </div>
   )
 }
 
-function TextBlockEditor({ block, update }: BlockEditorProps<TextBlock>): JSX.Element {
+function TextBlockEditor({ block, update, remove }: BlockEditorProps<TextBlock>): JSX.Element {
   return (
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>文章</label>
@@ -81,11 +83,12 @@ function TextBlockEditor({ block, update }: BlockEditorProps<TextBlock>): JSX.El
           }
         })
       }} />
+      <button onClick={remove}>X</button>
     </div>
   )
 }
 
-function ImageBlockEditor({block, update}: BlockEditorProps<ImageBlock>): JSX.Element {
+function ImageBlockEditor({block, update, remove}: BlockEditorProps<ImageBlock>): JSX.Element {
   return (
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>画像</label>
@@ -107,11 +110,12 @@ function ImageBlockEditor({block, update}: BlockEditorProps<ImageBlock>): JSX.El
           }
         })
       }} />
+      <button onClick={remove}>X</button>
     </div>
   )
 }
 
-function TableBlockEditor({block, update}: BlockEditorProps<TableBlock>): JSX.Element {
+function TableBlockEditor({block, update, remove}: BlockEditorProps<TableBlock>): JSX.Element {
   const addRow = () => {
     update({
       id: block.id,
@@ -180,6 +184,7 @@ function TableBlockEditor({block, update}: BlockEditorProps<TableBlock>): JSX.El
       </table>
       <button onClick={addRow}>追加</button>
       <button onClick={removeRow} >削除</button>
+      <button onClick={remove}>X</button>
     </div>
   )
 }

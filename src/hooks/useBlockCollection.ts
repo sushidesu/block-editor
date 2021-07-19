@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { EntityHookProps  } from "./entity"
+import { removeElementFromArray } from "../utils/removeElementFromArray"
 
 export type BlockTypes = "heading" | "text" | "image" | "table"
 
@@ -40,6 +41,7 @@ export type UpdateFunction<T> = (props: {
 export interface BlockCollecion {
   blocks: Block[]
   addBlock: (type: BlockTypes) => void
+  removeBlock: (id: string) => void
   handleSubmit: (func: (blocks: Block[]) => void) => () => void
   update: UpdateFunction<Block>
 }
@@ -99,6 +101,16 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
     }
   }, [])
 
+  const removeBlock = useCallback((id: string) => {
+    setBlocks(prev => {
+      const targetIndex = prev.findIndex(block => block.id === id)
+      if (targetIndex === -1) {
+        return prev
+      }
+      return removeElementFromArray(prev, targetIndex)
+    })
+  }, [])
+
   const handleSubmit = (func: (values: Block[]) => void): () => void => {
     return () => {
       func(blocks)
@@ -107,7 +119,7 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
 
   const update: UpdateFunction<Block> = ({ id, mutation }) => {
     setBlocks(prev => {
-      const targetIndex = blocks.findIndex(b => b.id === id)
+      const targetIndex = prev.findIndex(b => b.id === id)
       if (targetIndex === -1) {
         return prev
       }
@@ -124,6 +136,7 @@ export const useBlockCollection = (props: EntityHookProps<ReconstructProps>): Bl
   return {
     blocks,
     addBlock,
+    removeBlock,
     handleSubmit,
     update
   }
