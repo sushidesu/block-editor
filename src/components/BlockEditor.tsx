@@ -130,13 +130,33 @@ function TableBlockEditor({block, update}: BlockEditorProps<TableBlock>): JSX.El
       }
     })
   }
+  const rowUpdater: (index: number) => (mutation: (prev: TableRow) => TableRow) => void = (index) => (rowMutation) => {
+    update({
+      id: block.id,
+      mutation: (prev) => {
+        if (prev.type === "table") {
+          const newRows = [...prev.value.rows]
+          newRows[index] = rowMutation(newRows[index])
+          return {
+            ...prev,
+            value: {
+              ...prev.value,
+              rows: newRows
+            }
+          }
+        } else {
+          return prev
+        }
+      }
+    })
+  }
   return (
     <div css={blockWrapperStyle}>
       <label css={labelStyle}>テーブル</label>
       <table>
         <tbody>
           {block.value.rows.map((row, i) => (
-            <TableRowEditor key={i} {...row} />
+            <TableRowEditor key={i} row={row} update={rowUpdater(i)} />
           ))}
         </tbody>
       </table>
@@ -145,22 +165,25 @@ function TableBlockEditor({block, update}: BlockEditorProps<TableBlock>): JSX.El
   )
 }
 
-function TableRowEditor({ title, body }: TableRow): JSX.Element {
-  const [row, setRow] = useState<TableRow>({ title, body })
+type TableRowEditorProps = {
+  row: TableRow
+  update: (mutation: (prev: TableRow) => TableRow) => void
+}
 
+function TableRowEditor({ row, update }: TableRowEditorProps): JSX.Element {
   return (
     <tr>
       <th>
-        <input value={row.title} onChange={e => {
-          setRow(prev => ({
+        <input defaultValue={row.title} onBlur={e => {
+          update(prev => ({
             ...prev,
             title: e.target.value
           }))
         }} />
       </th>
       <td>
-        <input value={row.body} onChange={e => {
-          setRow(prev => ({
+        <input defaultValue={row.body} onBlur={e => {
+          update(prev => ({
             ...prev,
             body: e.target.value
           }))
