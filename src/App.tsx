@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import "./App.css"
-import { useBlockCollection, BlockBase, BlockCollecion } from "./hooks/useBlock";
+import { useBlockCollection, BlockBase, BlockCollection } from "./hooks/useBlock";
 import { BlockEditor } from "./components/BlockEditor/BlockEditor"
 import { css } from "@emotion/react";
 import { v4 as uuidv4 } from "uuid"
@@ -23,7 +23,7 @@ export type CustomBlock =
   | ImageBlock
   | TableBlock
 
-export type UdpateCustomBlock = BlockCollecion<CustomBlock>["updateBlock"]
+export type UpdateCustomBlock = BlockCollection<CustomBlock>["updateBlock"]
 
 function App() {
   const { blocks, addBlock, removeBlock, moveBlock, handleSubmit, updateBlock } = useBlockCollection<CustomBlock>({

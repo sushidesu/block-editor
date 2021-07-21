@@ -10,7 +10,7 @@ export interface BlockBase<T, U extends string>{
 }
 
 // main interface
-export interface BlockCollecion<Block extends BlockBase<any, any>> {
+export interface BlockCollection<Block extends BlockBase<any, any>> {
   blocks: ReadonlyArray<Block>
   addBlock: (props: AddBlockProps<Block>) => void
   removeBlock: (props: RemoveBlockProps) => void
@@ -63,7 +63,7 @@ const findTargetBlockIndex = <Block extends BlockBase<any, any>>(id: Block["id"]
 export const useBlockCollection = <Block extends BlockBase<any, any>>({
   blockInitializer,
   initialBlocks
-}: UseBlockCollectionProps<Block>): BlockCollecion<Block> => {
+}: UseBlockCollectionProps<Block>): BlockCollection<Block> => {
   const [blocks, setBlocks] = useState<Block[]>(initialBlocks ?? [])
 
   const addBlock = useCallback(({ type }: AddBlockProps<Block>) => {

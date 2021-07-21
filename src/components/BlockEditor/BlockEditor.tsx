@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { CustomBlock, UdpateCustomBlock } from "../../App"
+import { CustomBlock, UpdateCustomBlock } from "../../App"
 // import { UpdateFunction, Block } from "../../hooks/useBlockCollection"
 import { HeadingBlockEditor } from "./HeadingBlockEditor"
 import { TextBlockEditor } from "./TextBlockEditor"
@@ -8,7 +8,7 @@ import { TableBlockEditor } from "./TableBlockEditor"
 
 export type BlockEditorProps<T extends CustomBlock> = {
   block: T,
-  update: UdpateCustomBlock
+  update: UpdateCustomBlock
   remove: () => void
   moveUp: () => void
   moveDown: () => void
