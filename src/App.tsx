@@ -26,7 +26,7 @@ export type CustomBlock =
 export type UpdateCustomBlock = BlockCollection<CustomBlock>["updateBlock"]
 
 function App() {
-  const { blocks, addBlock, removeBlock, moveBlock, handleSubmit, updateBlock } = useBlockCollection<CustomBlock>({
+  const { blocks, addBlock, removeBlock, moveBlock, updateBlock, handleSubmit } = useBlockCollection<CustomBlock>({
     blockInitializer: (type) => {
       switch (type) {
         case "heading":

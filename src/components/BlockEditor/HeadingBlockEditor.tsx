@@ -9,18 +9,15 @@ export function HeadingBlockEditor({ block, update, ...rest }: BlockEditorProps<
       {...rest}
     >
       <input defaultValue={block.value.content} onBlur={(e) => {
-        update({ id: block.id, mutation: (prev) => {
-          if (prev.type === "heading") {
-            return ({
+        update({
+          id: block.id,
+          mutation: (prev) => {
+            return {
               ...prev,
-              value: {
-                content: e.target.value
-              }
-            })
-          } else {
-            return prev
+              content: e.target.value
+            }
           }
-        } })
+        })
       }}/>
     </BlockEditorWrapper>
   )

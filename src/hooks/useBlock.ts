@@ -42,12 +42,11 @@ type HandleBlockSubmit<Block extends BlockBase<any, any>>
   = (func: (blocks: Block[]) => void) => () => void
 
 // update helper
-type UpdateBlockProps<Block extends BlockBase<any, any>> = {
+export type UpdateBlockProps<Block extends BlockBase<any, any>> = {
   id: string
-  type: Block["type"]
-  mutation: MutateBlockFunction<Block>
+  mutation: (prev: Block) => Block
 }
-type MutateBlockFunction<Block extends BlockBase<any, any>> = (prev: Block["value"]) => Block["value"]
+export type UpdateBlockFunction<Block extends BlockBase<any,any>> = (props: UpdateBlockProps<Block>) => void
 
 // --- implements ---
 // helper
@@ -71,7 +70,7 @@ export const useBlockCollection = <Block extends BlockBase<any, any>>({
       const newBlock = blockInitializer(type)
       return prev.concat(newBlock)
     })
-  }, [])
+  }, [blockInitializer])
 
   const removeBlock = useCallback(({ id }: RemoveBlockProps) => {
     setBlocks(prev => {
@@ -109,7 +108,7 @@ export const useBlockCollection = <Block extends BlockBase<any, any>>({
     return () => {
       func(blocks)
     }
-  }, [])
+  }, [blocks])
 
   return {
     blocks,
