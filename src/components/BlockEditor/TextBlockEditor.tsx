@@ -1,4 +1,4 @@
-import { TextBlock } from "../../hooks/useBlockCollection"
+import { TextBlock } from "../../domain/CustomBlock"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 

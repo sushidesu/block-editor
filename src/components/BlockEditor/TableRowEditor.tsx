@@ -1,4 +1,4 @@
-import { TableRow } from "../../hooks/useBlockCollection"
+import { TableRow } from "../../domain/CustomBlock"
 
 type TableRowEditorProps = {
   row: TableRow

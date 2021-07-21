@@ -1,4 +1,4 @@
-import { ImageBlock } from "../../hooks/useBlockCollection"
+import { ImageBlock } from "../../domain/CustomBlock"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 

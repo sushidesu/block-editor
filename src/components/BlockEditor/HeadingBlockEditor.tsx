@@ -1,4 +1,4 @@
-import { HeadingBlock } from "../../hooks/useBlockCollection"
+import { HeadingBlock } from "../../domain/CustomBlock"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 

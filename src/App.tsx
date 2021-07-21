@@ -1,27 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import "./App.css"
-import { useBlockCollection, BlockBase, BlockCollection } from "./hooks/useBlock";
+import { useBlockCollection, BlockCollection } from "./hooks/useBlock";
+import { CustomBlock, HeadingBlock, TextBlock, ImageBlock, TableBlock } from "./domain/CustomBlock"
 import { BlockEditor } from "./components/BlockEditor/BlockEditor"
 import { css } from "@emotion/react";
 import { v4 as uuidv4 } from "uuid"
-
-export type HeadingBlock = BlockBase<{ content: string }, "heading">
-export type TextBlock = BlockBase<{ content: string }, "text">
-export type ImageBlock = BlockBase<{ imageUrl: string }, "image">
-export type TableBlock = BlockBase<{
-  rows: TableRow[]
-}, "table">
-
-export type TableRow = {
-  title: string
-  body: string
-}
-
-export type CustomBlock =
-  | HeadingBlock
-  | TextBlock
-  | ImageBlock
-  | TableBlock
 
 export type UpdateCustomBlock = BlockCollection<CustomBlock>["updateBlock"]
 

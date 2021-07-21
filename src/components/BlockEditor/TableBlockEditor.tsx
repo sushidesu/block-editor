@@ -1,4 +1,4 @@
-import { TableBlock, TableRow } from "../../hooks/useBlockCollection"
+import { TableBlock, TableRow } from "../../domain/CustomBlock"
 import { BlockEditorProps } from "./BlockEditor"
 import { BlockEditorWrapper } from "./BlockEditorWrapper"
 import { TableRowEditor } from "./TableRowEditor"

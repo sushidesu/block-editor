@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { CustomBlock } from "../../App"
+import { CustomBlock } from "../../domain/CustomBlock"
 import { BlockBase, UpdateBlockFunction } from "../../hooks/useBlock"
 import { HeadingBlockEditor } from "./HeadingBlockEditor"
 import { TextBlockEditor } from "./TextBlockEditor"
